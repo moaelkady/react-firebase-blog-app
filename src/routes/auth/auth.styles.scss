@@ -1,0 +1,48 @@
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 85vh;
+  width: 100%;
+  overflow: hidden;
+  .sign-up-form,
+  .sign-in-form {
+    flex: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .switch-form {
+    flex: 1;
+    p {
+      background-color: #1d1c1c88;
+      padding: 15px 10px 14px 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      cursor: default;
+      span.switch-btn {
+        letter-spacing: 0px;
+        cursor: pointer;
+        background-color: rgba(255, 0, 0, 0.87);
+        padding: 15px;
+        border-radius: 0 8px 8px 0;
+        margin-right: -10px;
+        margin-left: 10px;
+        transition: 0.3s ease;
+        &:hover {
+        background-color: rgb(252, 21, 21);
+        }
+      }
+    }
+  }
+}
+
+.user-already-logged {
+  cursor: default;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+}
