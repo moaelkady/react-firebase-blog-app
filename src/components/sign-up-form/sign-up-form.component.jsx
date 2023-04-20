@@ -46,13 +46,14 @@ const SignUpForm = () => {
         resetFormFields();
         toast("User created");
       } catch (error) {
-        if (error.code === "auth/email-already-in-use") {
-          toast.error("Cannot create user, email already in use");
-        } else {
-          toast.error(
-            "user creation encountered an error please check your email",
-            error
-          );
+        switch (error.code) {
+          case "auth/email-already-in-use":
+            toast.error("Cannot create user, email already in use");
+            break;
+          default:
+            toast.error(
+              "user creation encountered an error please check your email"
+            );
         }
         return;
       }
@@ -68,26 +69,28 @@ const SignUpForm = () => {
   };
   return (
     <div className="sign-up-form">
-      <form onSubmit={handleSubmit}>
-        <FormInput
-          placeholder="First Name"
-          type="text"
-          required
-          onChange={handleChange}
-          name="firstName"
-          value={firstName}
-        />
-        <FormInput
-          placeholder="Last Name"
-          type="text"
-          required
-          onChange={handleChange}
-          name="lastName"
-          value={lastName}
-        />
+      <form method="POST" onSubmit={handleSubmit} autoComplete="off">
+        <div className="form-group">
+          <FormInput
+            label="First Name"
+            type="text"
+            required
+            onChange={handleChange}
+            name="firstName"
+            value={firstName}
+          />
+          <FormInput
+            label="Last Name"
+            type="text"
+            required
+            onChange={handleChange}
+            name="lastName"
+            value={lastName}
+          />
+        </div>
 
         <FormInput
-          placeholder="Email"
+          label="Email"
           type="email"
           required
           onChange={handleChange}
@@ -96,7 +99,7 @@ const SignUpForm = () => {
         />
 
         <FormInput
-          placeholder="Password"
+          label="Password"
           type="password"
           required
           onChange={handleChange}
@@ -105,7 +108,7 @@ const SignUpForm = () => {
         />
 
         <FormInput
-          placeholder="Confirm password"
+          label="Confirm password"
           type="password"
           required
           onChange={handleChange}

@@ -3,15 +3,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 85vh;
+  min-height: 85vh;
   width: 100%;
-  overflow: hidden;
   .sign-up-form,
   .sign-in-form {
     flex: 3;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    form {
+      width: 80%;
+      .form-group {
+        display: flex;
+        div:first-child {
+          margin-right: 15px;
+        }
+      }
+    }
   }
   .switch-form {
     flex: 1;
@@ -30,9 +39,10 @@
         border-radius: 0 8px 8px 0;
         margin-right: -10px;
         margin-left: 10px;
-        transition: 0.3s ease;
+        transition: 0.15s ease;
         &:hover {
-        background-color: rgb(252, 21, 21);
+          background-color: rgb(252, 21, 21);
+          letter-spacing: 1px;
         }
       }
     }
@@ -45,4 +55,14 @@
   justify-content: center;
   align-items: center;
   height: 70vh;
+}
+
+@media screen and (max-width: 731px) {
+  .auth-container .sign-up-form form .form-group,
+  .auth-container .sign-in-form form .form-group {
+    display: block;
+    div:first-child {
+      margin-right: unset;
+    }
+  }
 }

@@ -45,16 +45,29 @@ function App() {
         <Route
           path="/create"
           element={
-            user?.uid ? <AddEditBlog user={user} /> : <Navigate to="/auth" />
+            user && user.uid ? (
+              <AddEditBlog user={user} />
+            ) : (
+              <Navigate to="/auth" />
+            )
           }
         />
         <Route
           path="/update/:id"
           element={
-            user?.uid ? <AddEditBlog user={user} /> : <Navigate to="/auth" />
+            user && user.uid ? (
+              <AddEditBlog user={user} />
+            ) : (
+              <Navigate to="/auth" />
+            )
           }
         />
-        <Route path="/auth" element={<Auth user={user} />} />
+        <Route
+          path="/auth"
+          element={
+            user && user.uid ? <Navigate to="/create" /> : <Auth user={user} />
+          }
+        />
         <Route path="*" element={<NotFound user={user} />} />
       </Routes>
     </div>

@@ -74,7 +74,9 @@ const Navbar = ({ user, handleLogout }) => {
             <p className="welcome-user">
               Hello,&nbsp;
               <span className="username">
-                {user.displayName.split(" ").slice(0, 1)}
+                {user && user.displayName
+                  ? user.displayName.split(" ").slice(0, 1)
+                  : "user"}
               </span>
             </p>
             <span className="logout-user-btn" onClick={handleLogout}>

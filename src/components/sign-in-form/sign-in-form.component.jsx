@@ -38,14 +38,17 @@ const SignInForm = () => {
       const { user } = await signInWithEmailAndPassword(auth, email, password);
       console.log(user);
     } catch (error) {
-      if (error.code === "auth/user-not-found") {
-        toast.error("No such email or password");
-        return;
-      } else {
-        toast.error("Error loging in", error);
-        console.log(error);
-        return;
+      switch (error.code) {
+        case "auth/user-not-found":
+          toast.error("No such email or password");
+          break;
+        case "auth/wrong-password":
+          toast.error("Wronge password");
+          break;
+        default:
+          toast.error("Error loging in", error);
       }
+      return;
     }
     resetFormFields();
     navigate("/");
@@ -54,24 +57,26 @@ const SignInForm = () => {
 
   return (
     <div className="sign-in-form">
-      <form onSubmit={handleSubmit}>
+      <form method="POST" onSubmit={handleSubmit} autoComplete="off">
         <FormInput
-          placeholder="Email"
+          label="Email"
           type="email"
           required
           onChange={handleChange}
           name="email"
           value={email}
+          autoComplete="off"
         />
         <FormInput
-          placeholder="Password"
+          label="Password"
           type="password"
           required
           onChange={handleChange}
           name="password"
           value={password}
+          autoComplete="off"
         />
-        <Button btnName="Sign Up" type="submit" />
+        <Button btnName="Log In" type="submit" />
       </form>
     </div>
   );
