@@ -4,7 +4,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./trending.styles.scss";
 
-const Trending = ({ blogs }) => {
+const Trending = ({ blogs, height }) => {
   return (
     <Fragment>
       <div className="carousel-heading-container">
@@ -23,11 +23,12 @@ const Trending = ({ blogs }) => {
           blogs.map((item) => (
             <div className="item" key={item.id}>
               <Link to={`/detail/${item.id}`}>
-                <div className="img-container">
+                <div className="img-container" style={{height:`${window.innerHeight - 138}px`}}>
                   <div
                     className="bg-img"
-                    style={{ backgroundImage: `URL(${item.imgUrl})` }}
+                    style={{ backgroundImage: `URL(${item.imgUrl})`,height: `${window.innerHeight - 138}px` }}
                   ></div>
+                  {console.log(`${height}`)}
                 </div>
                 <div className="desc">
                   <span className="title">{item.title}</span>

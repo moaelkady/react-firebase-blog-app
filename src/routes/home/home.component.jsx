@@ -89,6 +89,10 @@ const Home = ({ user }) => {
     setHide(false);
   }, []);
 
+  const handleResetClick = ()=> {
+    setSearch("");
+  }
+
   const getBlogs = async () => {
     const blogRef = collection(db, "posts");
     const firstFour = query(blogRef, orderBy("title"), limit(4));
@@ -206,7 +210,6 @@ const Home = ({ user }) => {
       <hr />
       <div className="home-content">
         <div className="posts-area">
-          <h3 className="heading">Check Blogs</h3>
           {posts.length === 0 && location.pathname !== "/" && (
             <Fragment>
               <h4>
@@ -232,11 +235,10 @@ const Home = ({ user }) => {
           )}
         </div>
         <div className="blog-side-bar">
-          <Search search={search} handleChange={handleChange} />
-          <div className="heading">Tags</div>
-          <Tags tags={tags} />
-          <FeatureBlogs title={"Most Popular"} blogs={posts} />
+          <Search handleResetClick={handleResetClick} search={search} handleChange={handleChange} />
           <Category catgBlogsCount={categoryCount} />
+          <Tags tags={tags} />
+          <FeatureBlogs blogs={posts} />
         </div>
       </div>
     </div>

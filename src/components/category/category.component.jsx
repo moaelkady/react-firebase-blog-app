@@ -3,9 +3,9 @@ import "./category.styles.scss";
 
 const Category = ({ catgBlogsCount }) => {
   return (
-    <div className="widget">
-      <div className="blog-heading text-start py-2 mb-4">Category</div>
-      <div className="link-widget">
+    <div className="category-widget">
+      <div className="category-heading">Category</div>
+      <div className="category-link-widget">
         <ul>
           {catgBlogsCount &&
             catgBlogsCount.map((item, index) => (

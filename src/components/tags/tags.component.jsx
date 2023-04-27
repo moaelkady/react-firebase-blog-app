@@ -1,10 +1,12 @@
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 
 import "./tags.styles.scss";
 
 const Tags = ({ tags }) => {
   return (
-    <div>
+    <Fragment>
+      <div className="tags-heading">Tags</div>
       <div className="tags-container">
         {tags &&
           tags.map((tag, index) => (
@@ -13,7 +15,7 @@ const Tags = ({ tags }) => {
             </p>
           ))}
       </div>
-    </div>
+    </Fragment>
   );
 };
 

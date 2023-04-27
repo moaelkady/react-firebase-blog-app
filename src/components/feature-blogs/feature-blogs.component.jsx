@@ -1,31 +1,36 @@
+import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./feature-blogs.styles.scss";
 
-const FeatureBlogs = ({ blogs, title }) => {
+const FeatureBlogs = ({ blogs }) => {
   const navigate = useNavigate();
 
   return (
-    <div>
-      <div className="blog-heading">{title}</div>
+    <Fragment>
+      <div className="feature-blogs-heading">Most Popular</div>
       {blogs &&
         blogs.map((item) => (
           <div
-            className="row"
+            className="feature-blog-item"
             key={item.id}
-            style={{ cursor: "pointer" }}
             onClick={() => navigate(`/detail/${item.id}`)}
           >
-            <div className="">
-              <img src={item.imgUrl} alt={item.title} width="200px" height="200px" className="" />
+            <div className="bg-img-container">
+              <div
+                className="bg-img"
+                style={{ backgroundImage: `URL(${item.imgUrl})` }}
+              ></div>
             </div>
-            <div className="">
-              <div className="">{item.title}</div>
-              <div className="">{item.timestamp.toDate().toDateString()}</div>
+            <div className="description-container">
+              <div className="title">{item.title}</div>
+              <div className="time-shared">
+                {item.timestamp.toDate().toDateString()}
+              </div>
             </div>
           </div>
         ))}
-    </div>
+    </Fragment>
   );
 };
 
