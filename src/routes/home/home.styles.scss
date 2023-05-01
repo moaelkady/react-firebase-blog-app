@@ -1,24 +1,84 @@
 .home-route-container {
-    .home-carousel {
+  hr {
+    height: 5px;
+    margin: 20px 0;
+    border: none;
+    background-color: transparent;
+    border-top: 1px solid var(--primary--color);
+    border-bottom: 1px solid var(--primary--color);
+  }
+  .ssc-sidebar-controler {
+    display: none;
+  }
+  .home-content {
+    display: flex;
+    .posts-area {
+      flex: 3;
     }
+    .blog-side-bar {
+      flex: 1;
+      background-color: var(--dark--blue);
+      margin-top: -20px;
+      .ssc-sidebar-close {
+        display: none;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 731px) {
+  .home-route-container {
+    position: relative;
     hr {
-        height: 5px;
-        margin: 20px 0;
-        border: none;
-        background-color: transparent;
-        border-top: 1px solid var(--primary--color);
-        border-bottom: 1px solid var(--primary--color);
+      display: none;
+    }
+    .ssc-sidebar-controler {
+      display: block;
+      padding: 10px 0px;
+      background-color: #121212;
+      border: 1px solid var(--primary--color);
+      width: 95%;
+      margin: 30px auto 0;
+      cursor: pointer;
+      transition: 0.3s ease;
+      &:hover {
+        background-color: var(--primary--color);
+        color: #fff;
+      }
     }
     .home-content {
-        display: flex;
-        .posts-area {
-            flex: 3;
-
+      display: block;
+      .blog-side-bar {
+        height: 0;
+        overflow: hidden;
+        transition: .6s linear;
+        .ssc-sidebar-close {
+          display: block;
         }
-        .blog-side-bar {
-            flex: 1;
-            background-color: var(--dark--blue);
-            margin-top: -20px;
+      }
+      .blog-side-bar.mobile-open {
+        height: 100%;
+        overflow: hidden;
+        position: absolute;
+        z-index: 2;
+        top: 20px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        .ssc-sidebar-close {
+          display: block;
+          padding: 10px;
+          font-weight: 600;
+          border: 1px solid var(--primary--color);
+          width: 50%;
+          margin: 20px auto;
+          transition: 0.3s ease;
+          &:hover {
+            background-color: var(--primary--color);
+            color: #fff;
+          }
         }
+      }
     }
+  }
 }

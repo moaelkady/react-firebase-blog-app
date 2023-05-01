@@ -1,34 +1,33 @@
 import { Fragment } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { Link } from "react-router-dom";
+import Button from "../button/button.component";
 import "./comment-box.styles.scss";
 
 const CommentBox = ({ userId, userComment, setUserComment, handleComment }) => {
-  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setUserComment(e.target.value);
+  };
   return (
     <Fragment>
-      <form className="">
-        <div className="">
-          <textarea
-            rows="4"
-            value={userComment}
-            onChange={(e) => setUserComment(e.target.value)}
-            className=""
-          />
-        </div>
+      <form className="add-comment-form">
+        <textarea
+          placeholder="Type a comment or HTML code!"
+          value={userComment}
+          onChange={handleChange}
+        />
       </form>
       {!userId ? (
-        <Fragment>
+        <div className="not-user-block">
           <h5>Please login or Create an account to post comment</h5>
-          <button className="" onClick={() => navigate("/auth")}>
-            Login
-          </button>
-        </Fragment>
+          <Link to="/auth" className="add-comment-btn-container">
+            <Button btnName="Login || Signup"/>
+          </Link>
+        </div>
       ) : (
         <Fragment>
-          <button className="" type="" onClick={handleComment}>
-            Post Comment
-          </button>
+          <div className="add-comment-btn-container">
+            <Button btnName="Comment" onClick={handleComment} />
+          </div>
         </Fragment>
       )}
     </Fragment>

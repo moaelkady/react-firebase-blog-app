@@ -4,7 +4,6 @@ import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-
 };
 
 const app = initializeApp(firebaseConfig);

@@ -5,18 +5,14 @@ import "./related-blog.styles.scss";
 const RelatedBlog = ({ blogs, id }) => {
   return (
     <div className="related-blog-container">
-      <div className="">Related Blogs</div>
-      <div className="">
-        <div className="">
-          {blogs.length === 1 && (
-            <h5 className="">Related Blogs not found with this current blog</h5>
-          )}
-          {blogs &&
-            blogs
-              .filter((blogs) => blogs.id !== id)
-              .map((item) => <Card {...item} />)}
-        </div>
-      </div>
+      <div className="feature-blogs-heading">Related Blogs</div>
+      {blogs.length === 1 && (
+        <h5 className="">Related Blogs not found with this current blog</h5>
+      )}
+      {blogs &&
+        blogs
+          .filter((blogs) => blogs.id !== id)
+          .map((item) => <Card key={id} {...item} />)}
     </div>
   );
 };

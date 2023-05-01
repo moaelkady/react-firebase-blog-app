@@ -22,3 +22,8 @@ html {
 .Toastify__toast-container--top-center {
   top: 80px !important;
 }
+
+@keyframes fadeIn {
+  0% { opacity: 1; color: #fff; }
+  90% { opacity: 0; color: var(--primary--color);}
+}

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { excerpt } from "../../utils/functions/functions";
+import DOMPurify from "dompurify";
 
 import "./blog-section.styles.scss";
 
@@ -17,7 +18,11 @@ const BlogSection = ({ postData, user, handleDelete }) => {
               <span>{category}</span>
             </div>
             <div className="post-description">
-              <p>{excerpt(post, 120)}</p>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(excerpt(post, 120)),
+                }}
+              />
               <Link to={`/detail/${id}`}>
                 <button className="btn-read">Know More</button>
               </Link>
@@ -31,11 +36,13 @@ const BlogSection = ({ postData, user, handleDelete }) => {
           </div>
         </div>
 
-        <div className="post-row">
+        <div className="post-row tags-author">
           <div className="post-col">
             <div className="tags">
               {tags.map((tag) => (
-                <span className="tag-name" key={tag}>{tag}</span>
+                <span className="tag-name" key={tag}>
+                  {tag}
+                </span>
               ))}
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
+import DOMPurify from "dompurify";
 import {
   collection,
   doc,
@@ -13,16 +14,16 @@ import {
   where,
 } from "firebase/firestore";
 import { isEmpty } from "lodash";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import CommentBox from "../../components/comment-box/comment-box.component";
-import Like from "../../components/like/like.component";
 import FeatureBlogs from "../../components/feature-blogs/feature-blogs.component";
 import RelatedBlog from "../../components/related-blog/related-blog.component";
 import Tags from "../../components/tags/tags.component";
 import UserComments from "../../components/user-comments/user-comments.component";
 import { db } from "../../utils/firebase/firebase.utils";
 import Loader from "../../components/loader/loader.component";
+import { Helmet } from "react-helmet-async";
 
 import "./details.styles.scss";
 
@@ -34,13 +35,12 @@ const Details = ({ user }) => {
   const [blogs, setBlogs] = useState([]);
   const [tags, setTags] = useState([]);
   const [comments, setComments] = useState([]);
-  let [likes, setLikes] = useState([]);
   const [userComment, setUserComment] = useState("");
   const [relatedBlogs, setRelatedBlogs] = useState([]);
 
   useEffect(() => {
     const getRecentBlogs = async () => {
-      const blogRef = collection(db, "blogs");
+      const blogRef = collection(db, "posts");
       const recentBlogs = query(
         blogRef,
         orderBy("timestamp", "desc"),
@@ -78,7 +78,6 @@ const Details = ({ user }) => {
       where("tags", "array-contains-any", blogDetail.data().tags, limit(3))
     );
     setComments(blogDetail.data().comments ? blogDetail.data().comments : []);
-    setLikes(blogDetail.data().likes ? blogDetail.data().likes : []);
     const relatedBlogSnapshot = await getDocs(relatedBlogsQuery);
     const relatedBlogs = [];
     relatedBlogSnapshot.forEach((doc) => {
@@ -106,90 +105,89 @@ const Details = ({ user }) => {
     setUserComment("");
   };
 
-  const handleLike = async () => {
-    if (userId) {
-      if (blog && blog.likes) {
-        const index = likes.findIndex((id) => id === userId);
-        if (index === -1) {
-          likes.push(userId);
-          setLikes([...new Set(likes)]);
-        } else {
-          likes = likes.filter((id) => id !== userId);
-          setLikes(likes);
-        }
-      }
-      await updateDoc(doc(db, "posts", id), {
-        ...blog,
-        likes,
-        timestamp: serverTimestamp(),
-      });
-    }
-  };
+  console.log(blog);
 
   return (
-    <div className="single">
-      <div
-        className="blog-title-box"
-        style={{ backgroundImage: `url('${blog && blog.imgUrl}')` }}
-      >
-        <div className="overlay"></div>
-        <div className="blog-title">
-          <span>{blog && blog.timestamp.toDate().toDateString()}</span>
-          <h2>{blog && blog.title}</h2>
-        </div>
-      </div>
-      <div className="container-fluid pb-4 pt-4 padding blog-single-content">
-        <div className="container padding">
-          <div className="row mx-0">
-            <div className="col-md-8">
-              <span className="meta-info text-start">
-                By <p className="author">{blog && blog.author}</p> -&nbsp;
-                {blog && blog.timestamp.toDate().toDateString()}
-                <Like handleLike={handleLike} likes={likes} userId={userId} />
-              </span>
-              <p className="text-start">{blog && blog.post}</p>
-              <div className="text-start">
-                <Tags tags={blog && blog.tags} />
-              </div>
-              <br />
-              <div className="custombox">
-                <div className="scroll">
-                  <h4 className="small-title">
-                    {comments && comments.length} Comment
-                  </h4>
-                  {isEmpty(comments) ? (
-                    <UserComments
-                      msg={
-                        "No Comment yet posted on this blog. Be the first to comment"
-                      }
-                    />
-                  ) : (
-                    <Fragment>
-                      {comments &&
-                        comments.map((comment) => (
-                          <UserComments {...comment} />
-                        ))}
-                    </Fragment>
-                  )}
-                </div>
-              </div>
-              <CommentBox
-                userId={userId}
-                userComment={userComment}
-                setUserComment={setUserComment}
-                handleComment={handleComment}
-              />
-            </div>
-            <div className="col-md-3">
-              <div className="blog-heading text-start py-2 mb-4">Tags</div>
-              <Tags tags={tags} />
-              <FeatureBlogs title={"Recent Blogs"} blogs={blogs} />
+    <Fragment>
+      <Helmet>
+        <title>{blog && blog.title}</title>
+        <meta name="description" content={blog && blog.metaDescription} />
+        <meta name="keyword" content={blog && blog.tags.map((tag) => tag)} />
+      </Helmet>
+      <div className="post-details-route">
+        <div
+          className="post-title-box"
+          style={{
+            backgroundImage: `url('${blog && blog.imgUrl}')`,
+            height: `${window.innerHeight - 80}px`,
+          }}
+        >
+          <div className="overlay"></div>
+          <div className="post-title">
+            <span>{blog && blog.timestamp.toDate().toDateString()}</span>
+            <div className="author">
+              <h2>{blog && blog.title}</h2>
+              <p>By {blog && blog.author}</p>
             </div>
           </div>
-          <RelatedBlog id={id} blogs={relatedBlogs} />
+        </div>
+        <div className="post-body-container">
+          <div className="post-details">
+            <div className="post-content">
+              <Link to="/">
+                <span className="arrow">&#8617;</span>Go Back To Home Page
+              </Link>
+              {blog && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(blog.post),
+                  }}
+                />
+              )}
+              <Link to="/">
+                <span className="arrow">&#8617;</span>Go Back To Home Page
+              </Link>
+            </div>
+            <div className="post-tags">
+              <Tags tags={blog && blog.tags} />
+            </div>
+            <div className="comment-box">
+              <div className="comments">
+                <h4 className="small-title">
+                  {comments && comments.length} Comment
+                </h4>
+                {isEmpty(comments) ? (
+                  <UserComments
+                    msg={"No Comments yet. Be the first to comment!"}
+                  />
+                ) : (
+                  <Fragment>
+                    {comments &&
+                      comments.map((comment) => (
+                        <UserComments
+                          key={comment.createdAt.seconds}
+                          {...comment}
+                        />
+                      ))}
+                  </Fragment>
+                )}
+              </div>
+            </div>
+            <CommentBox
+              userId={userId}
+              userComment={userComment}
+              setUserComment={setUserComment}
+              handleComment={handleComment}
+            />
+          </div>
+          <div className="post-side-bar">
+            <Tags tags={tags} />
+            <FeatureBlogs title={"Recent Blogs"} blogs={blogs} />
+            <RelatedBlog id={id} blogs={relatedBlogs} />
+          </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

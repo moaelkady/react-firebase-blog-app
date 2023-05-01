@@ -66,3 +66,34 @@
     }
   }
 }
+
+@media screen and (max-width: 731px) {
+  .home-carousel {
+    .carousel-root {
+      .carousel.carousel-slider {
+        .slider-wrapper {
+          ul {
+            li.slide {
+              div.item {
+                a {
+                  .img-container {
+                    max-height: 300px !important;
+                    .bg-img {
+                      max-height: 300px !important;
+                    }
+                  }
+                  .desc {
+                    flex-direction: column;
+                    span.title {
+                      margin-bottom: 20px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

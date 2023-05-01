@@ -57,7 +57,7 @@ const SignInForm = () => {
 
   return (
     <div className="sign-in-form">
-      <form method="POST" onSubmit={handleSubmit} autoComplete="off">
+      <form method="POST" onSubmit={handleSubmit}>
         <FormInput
           label="Email"
           type="email"
